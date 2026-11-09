@@ -1,0 +1,29 @@
+# Netlify configuration.
+#
+# Netlify detects Next.js automatically and installs its Next.js runtime, which
+# handles server rendering, caching and on-demand revalidation. The runtime is
+# deliberately NOT pinned here, so every build gets the latest version.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # Sanity Studio needs Node 22.12 or newer. "22" selects the latest 22.x.
+  NODE_VERSION = "22"
+
+# Headers for files Netlify serves straight from its CDN (images, fonts, the
+# form declaration). Pages rendered by Next.js get their security headers,
+# including the Content Security Policy, from next.config.ts instead, because
+# Netlify's header rules do not apply to them.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/__forms.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    X-Frame-Options = "DENY"

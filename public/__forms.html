@@ -1,0 +1,29 @@
+<!doctype html>
+<!--
+  This file exists only so Netlify can detect the contact form at deploy time.
+  The website renders its form with React, which Netlify's form detection cannot
+  see, so the same form (same name, same field names) is declared here in plain
+  HTML. Submissions from the real form are POSTed to this file's address.
+
+  If you add, remove or rename a field in components/forms/ContactForm.tsx,
+  make the same change here.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Contact form</title>
+  </head>
+  <body>
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="contact" />
+      <input name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="text" name="company" />
+      <input type="text" name="budget" />
+      <input type="text" name="service" />
+      <textarea name="message"></textarea>
+    </form>
+  </body>
+</html>
