@@ -12,7 +12,8 @@
     "test": "vitest run",
     "seed": "tsx scripts/seed/index.ts",
     "dev:mock": "tsx scripts/dev/preview.ts",
-    "preview:mock": "tsx scripts/dev/preview.ts --prod"
+    "preview:mock": "tsx scripts/dev/preview.ts --prod",
+    "seed:login": "sanity exec scripts/seed/index.ts --with-user-token"
   },
   "dependencies": {
     "@portabletext/react": "^8.0.1",

@@ -54,6 +54,10 @@ function seededRandom(seed: string): () => number {
 
 const round = (value: number) => Math.round(value * 10) / 10
 
+/** Makes text safe to place inside SVG/XML (e.g. the "&" in a brand name). */
+const escapeXml = (value: string) =>
+  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
 /** A soft gradient backdrop with blurred colour fields and a few crisp shapes. */
 function sceneSvg({key, palette: name, width: w, height: h}: ImageSpec): string {
   const p: Palette = PALETTES[name]
@@ -170,7 +174,7 @@ function wordmarkSvg({key, width: w, height: h, text = ''}: ImageSpec): string {
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
 ${marks[mark]}
-<text x="${round(markSize + 20)}" y="${round(cy)}" dominant-baseline="central" font-size="${round(h * 0.46)}" fill="#111" ${font}>${serif ? text : text.toUpperCase()}</text>
+<text x="${round(markSize + 20)}" y="${round(cy)}" dominant-baseline="central" font-size="${round(h * 0.46)}" fill="#111" ${font}>${escapeXml(serif ? text : text.toUpperCase())}</text>
 </svg>`
 }
 
@@ -188,7 +192,7 @@ function badgeSvg({palette: name, width: w, text = ''}: ImageSpec): string {
 <polygon points="${points}" fill="${p.pop}"/>
 <circle cx="${c}" cy="${c}" r="${round(c * 0.74)}" fill="none" stroke="#FFFFFF" stroke-width="${round(w * 0.012)}" opacity="0.9"/>
 <path d="M${round(c * 0.66)} ${round(c * 1.02)} l${round(c * 0.22)} ${round(c * 0.22)} l${round(c * 0.46)} ${round(-c * 0.5)}" fill="none" stroke="#FFFFFF" stroke-width="${round(w * 0.06)}" stroke-linecap="round" stroke-linejoin="round"/>
-<title>${text}</title>
+<title>${escapeXml(text)}</title>
 </svg>`
 }
 

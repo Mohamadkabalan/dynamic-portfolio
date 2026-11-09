@@ -4,8 +4,11 @@
  *   npm run seed            → uploads images and writes the documents
  *   npm run seed -- --dry   → renders the images to .seed-preview/ only
  *
- * Needs NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET and
- * SANITY_API_WRITE_TOKEN (an "Editor" token) in `.env.local`.
+ * Needs NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET in
+ * `.env.local`, plus permission to write, in one of two ways:
+ *   • `npm run seed:login` — uses your own Sanity login (`npx sanity login`),
+ *     so no token has to be created; or
+ *   • `npm run seed` with SANITY_API_WRITE_TOKEN (an "Editor" token) in `.env.local`.
  *
  * Safe to run more than once: every document has a fixed ID and is replaced in
  * place, and Sanity recognises identical image files instead of storing copies.
@@ -15,14 +18,20 @@
 import {mkdir, writeFile} from 'node:fs/promises'
 import {join} from 'node:path'
 
-import {loadEnvConfig} from '@next/env'
 import {createClient} from '@sanity/client'
 
 import {buildDocuments, IMAGE_SPECS, type ImageResolver} from './content'
 import {renderImage, type RenderedImage} from './images'
 import {withRanks} from './rank'
 
-loadEnvConfig(process.cwd())
+// Read the same settings file as the website (values already set are kept).
+for (const file of ['.env.local', '.env']) {
+  try {
+    process.loadEnvFile(file)
+  } catch {
+    // The file does not exist — that is fine.
+  }
+}
 
 const isDryRun = process.argv.includes('--dry') || process.argv.includes('--dry-run')
 
@@ -57,6 +66,15 @@ async function dryRun(images: RenderedImage[]) {
   for (const [type, count] of counts) console.log(`    ${String(count).padStart(3)} × ${type}`)
 }
 
+/**
+ * A write token from `.env.local`, or — when started with
+ * `sanity exec … --with-user-token` (npm run seed:login) — the token of the
+ * logged-in CLI user, which the Sanity CLI passes in as SANITY_AUTH_TOKEN.
+ */
+function resolveToken(): string | undefined {
+  return process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_AUTH_TOKEN || undefined
+}
+
 async function main() {
   console.log(`Rendering ${IMAGE_SPECS.length} placeholder images…`)
   const images = await inBatches(IMAGE_SPECS, 6, renderImage)
@@ -65,7 +83,7 @@ async function main() {
 
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
-  const token = process.env.SANITY_API_WRITE_TOKEN
+  const token = resolveToken()
 
   if (!projectId) fail('NEXT_PUBLIC_SANITY_PROJECT_ID is missing. Add it to .env.local (see .env.example).')
   if (!token) {
@@ -108,7 +126,7 @@ async function main() {
   await transaction.commit()
 
   console.log(`\n✔ Done. ${documents.length} documents and ${images.length} images are in ${projectId}/${dataset}.`)
-  console.log('  Open /studio to edit them. You can now delete the write token from sanity.io/manage.')
+  console.log('  Open /studio to edit them. If you created a write token for this, you can delete it now.')
 }
 
 main().catch((error: unknown) => {
