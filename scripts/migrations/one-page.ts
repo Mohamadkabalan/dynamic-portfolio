@@ -27,7 +27,15 @@ if (!projectId || !token) {
   process.exit(1)
 }
 
-const client = createClient({projectId, dataset, token, apiVersion: '2026-10-01', useCdn: false})
+// "raw" so a draft of the settings is cleaned up too.
+const client = createClient({
+  projectId,
+  dataset,
+  token,
+  apiVersion: '2026-10-01',
+  useCdn: false,
+  perspective: 'raw',
+})
 const REMOVED = ['workPage', 'contactPage.heading', 'contactPage.intro']
 
 async function main() {

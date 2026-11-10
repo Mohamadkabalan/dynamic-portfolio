@@ -151,6 +151,7 @@ export const CASE_STUDY_QUERY = defineQuery(`
     summary,
     cover{${imageFields}},
     "client": client->{name, website, logo{${imageFields}}},
+    liveUrl,
     challenge,
     strategy,
     execution[]{

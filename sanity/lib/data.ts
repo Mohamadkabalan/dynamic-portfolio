@@ -15,6 +15,7 @@ import {
   SITE_SETTINGS_QUERY,
   WORK_INDEX_QUERY,
 } from './queries'
+import {isValidSlug} from './slug'
 import {slugTag, type DocumentType} from './tags'
 
 /**
@@ -63,6 +64,11 @@ export const getHomeData = cache(async () => {
   return data
 })
 
+/**
+ * Every case study with a usable page address. One whose address is not a
+ * valid slug (e.g. a pasted link) cannot have a page, so it is left out here,
+ * in the sitemap and at build time; the Studio flags it for the editor.
+ */
 export const getWorkIndex = cache(async () => {
   if (!isSanityConfigured) return []
   const {data} = await sanityFetch({
@@ -70,7 +76,7 @@ export const getWorkIndex = cache(async () => {
     ...published,
     tags: tags('caseStudy', 'client'),
   })
-  return data
+  return data.filter((study) => isValidSlug(study.slug))
 })
 
 export const getCaseStudySlugs = cache(async () => {
@@ -80,7 +86,7 @@ export const getCaseStudySlugs = cache(async () => {
     ...published,
     tags: tags('caseStudy'),
   })
-  return data
+  return data.filter((study) => isValidSlug(study.slug))
 })
 
 export const getCaseStudy = cache(async (slug: string) => {
@@ -135,7 +141,7 @@ export const getSitemapData = cache(async () => {
     ...published,
     tags: tags('homePage', 'aboutPage', 'siteSettings', 'caseStudy'),
   })
-  return data
+  return data && {...data, caseStudies: data.caseStudies.filter((study) => isValidSlug(study.slug))}
 })
 
 export type SiteSettings = NonNullable<Awaited<ReturnType<typeof getSiteSettings>>>

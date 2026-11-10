@@ -1,4 +1,5 @@
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
+import {isValidSlug, SLUG_MAX_LENGTH, slugify} from '../../lib/slug'
 import {PresentationIcon} from '../../lib/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
@@ -91,13 +92,27 @@ export const caseStudy = defineType({
     }),
     defineField({
       name: 'slug',
-      title: 'Web address',
+      title: 'Page address on this site',
       description:
-        'The last part of the page link (yoursite.com/work/…). Click "Generate" to create it from the title. Avoid changing it after publishing — old links would stop working.',
+        'The last part of this case study\'s own page link: yoursite.com/work/pure-gym. Click "Generate" to create it from the title — only lowercase letters, numbers and hyphens. This is not the client\'s website or a link to a post (use "Link to the work online" for that). Avoid changing it after publishing — old links would stop working.',
       type: 'slug',
       group: 'overview',
-      options: {source: 'title', maxLength: 80},
-      validation: (rule) => rule.required(),
+      options: {source: 'title', maxLength: SLUG_MAX_LENGTH, slugify},
+      validation: (rule) =>
+        rule.required().custom((value) =>
+          !value?.current || isValidSlug(value.current)
+            ? true
+            : 'Only lowercase letters, numbers and hyphens are allowed here, e.g. "pure-gym". Links (https://…) do not belong in this field — click "Generate" to create the address from the title.',
+        ),
+    }),
+    defineField({
+      name: 'liveUrl',
+      title: 'Link to the work online',
+      description:
+        'Optional. Where people can see this work live: the client\'s Instagram or TikTok profile, a post, or their website. Shown as a button on the case study. Paste the full link starting with https://',
+      type: 'url',
+      group: 'overview',
+      validation: (rule) => rule.uri({scheme: ['http', 'https']}),
     }),
     defineField({
       name: 'featured',

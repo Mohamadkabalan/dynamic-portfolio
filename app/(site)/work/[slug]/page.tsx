@@ -1,4 +1,4 @@
-import {ArrowLeft} from 'lucide-react'
+import {ArrowLeft, ArrowUpRight} from 'lucide-react'
 import type {Metadata} from 'next'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
@@ -6,6 +6,7 @@ import {notFound} from 'next/navigation'
 import {FeedGrid} from '@/components/feed/FeedGrid'
 import {Reveal} from '@/components/motion/Reveal'
 import {ContactCta} from '@/components/sections/HomeSections'
+import {ButtonLink} from '@/components/ui/Button'
 import {RichText} from '@/components/ui/RichText'
 import {SanityImage} from '@/components/ui/SanityImage'
 import {Eyebrow} from '@/components/ui/SectionHeading'
@@ -25,6 +26,7 @@ import {
   getSiteSettings,
 } from '@/sanity/lib/data'
 import {hasAsset, staticImageUrl} from '@/sanity/lib/image'
+import {isValidSlug} from '@/sanity/lib/slug'
 
 /**
  * Case studies that exist at build time are prerendered. `dynamicParams = true`
@@ -101,6 +103,13 @@ export default async function CaseStudyPage({params}: PageProps<'/work/[slug]'>)
             {study.summary}
           </p>
         )}
+        {study.liveUrl && (
+          <div className="mt-8 motion-safe:animate-rise motion-safe:[animation-delay:160ms]">
+            <ButtonLink href={study.liveUrl} variant="secondary">
+              See the work online <ArrowUpRight aria-hidden className="size-4" />
+            </ButtonLink>
+          </div>
+        )}
       </header>
 
       {/* Full-bleed cover */}
@@ -157,7 +166,10 @@ export default async function CaseStudyPage({params}: PageProps<'/work/[slug]'>)
         </section>
       )}
 
-      <CaseStudyPager previous={study.previous} next={study.next} />
+      <CaseStudyPager
+        previous={isValidSlug(study.previous?.slug) ? study.previous : null}
+        next={isValidSlug(study.next?.slug) ? study.next : null}
+      />
 
       <ContactCta
         copy={{
