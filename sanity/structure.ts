@@ -9,6 +9,7 @@ import {
   ImagesIcon,
   PackageIcon,
   PresentationIcon,
+  TagIcon,
   UserIcon,
   WrenchIcon,
 } from './lib/icons'
@@ -108,6 +109,7 @@ export const structure: StructureResolver = (S, context: StructureResolverContex
             .title('Library')
             .items([
               orderable('tool', 'Tools', WrenchIcon),
+              orderable('toolCategory', 'Tool categories', TagIcon),
               orderable('certification', 'Certifications', CheckmarkCircleIcon),
             ]),
         ),

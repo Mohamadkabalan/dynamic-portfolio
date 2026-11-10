@@ -29,6 +29,11 @@ export const CONTENT_TYPES = [
 
 export type ContentTypeValue = (typeof CONTENT_TYPES)[number]['value']
 
+/**
+ * The starting set of tool categories. Editors manage categories in the
+ * Studio (Library → Tool categories); this list seeds them, and the site
+ * falls back to it until the first category document exists.
+ */
 export const TOOL_CATEGORIES = [
   {title: 'Scheduling', value: 'scheduling'},
   {title: 'Design', value: 'design'},
@@ -37,9 +42,8 @@ export const TOOL_CATEGORIES = [
   {title: 'Video', value: 'video'},
 ] as const
 
-export const TOOL_CATEGORY_TITLES: Record<string, string> = Object.fromEntries(
-  TOOL_CATEGORIES.map((category) => [category.value, category.title]),
-)
+/** The document id of a seeded category, e.g. "toolCategory-design". */
+export const toolCategoryId = (value: string): string => `toolCategory-${value}`
 
 /**
  * Spoken-language proficiency, strongest first. `score` is how many of the

@@ -138,7 +138,14 @@ export default async function HomePage() {
         case 'about':
           return about ? <AboutSection key={item._key} about={about} settings={settings} /> : null
         case 'tools':
-          return <ToolsSection key={item._key} tools={home.tools} copy={copy} />
+          return (
+            <ToolsSection
+              key={item._key}
+              tools={home.tools}
+              categories={home.toolCategories}
+              copy={copy}
+            />
+          )
         case 'contactCta':
           return (
             <ContactSection key={item._key} copy={copy} services={services} settings={settings} />

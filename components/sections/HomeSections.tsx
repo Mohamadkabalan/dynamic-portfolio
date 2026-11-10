@@ -7,8 +7,8 @@ import {SanityImage} from '@/components/ui/SanityImage'
 import {SectionHeading} from '@/components/ui/SectionHeading'
 import {ServiceIcon} from '@/components/ui/ServiceIcon'
 import {cn} from '@/lib/utils'
-import {TOOL_CATEGORIES} from '@/sanity/lib/constants'
-import type {FeedItem, Service, Tool} from '@/sanity/lib/data'
+import {TOOL_CATEGORIES, toolCategoryId} from '@/sanity/lib/constants'
+import type {FeedItem, Service, Tool, ToolCategory} from '@/sanity/lib/data'
 import {hasAsset} from '@/sanity/lib/image'
 
 /** The heading copy for a section, after CMS values and defaults are merged. */
@@ -88,21 +88,39 @@ export function ServicesSection({services, copy}: {services: Service[]; copy: Se
 
 /* --------------------------------- Tools --------------------------------- */
 
+/** The built-in columns, used until the editor has created a category in the Studio. */
+const STARTER_CATEGORIES: ToolCategory[] = TOOL_CATEGORIES.map((category) => ({
+  _id: toolCategoryId(category.value),
+  name: category.title,
+}))
+
 export function ToolsSection({
   tools,
+  categories,
   copy,
   headingLevel = 'h2',
 }: {
   tools: Tool[]
+  /** Columns in the editor's order (Library → Tool categories). */
+  categories: ToolCategory[]
   copy: SectionCopy
   headingLevel?: 'h2'
 }) {
   if (tools.length === 0) return null
 
-  const groups = TOOL_CATEGORIES.map((category) => ({
-    ...category,
-    tools: tools.filter((tool) => tool.category === category.value),
-  })).filter((group) => group.tools.length > 0)
+  const columns = categories.length > 0 ? categories : STARTER_CATEGORIES
+  const groups = columns
+    .map((category) => ({
+      _id: category._id,
+      name: category.name,
+      tools: tools.filter((tool) => tool.categoryId === category._id),
+    }))
+    .filter((group) => group.tools.length > 0)
+
+  // A tool whose category was deleted still shows, under "Other".
+  const known = new Set(columns.map((category) => category._id))
+  const other = tools.filter((tool) => !tool.categoryId || !known.has(tool.categoryId))
+  if (other.length > 0) groups.push({_id: 'other', name: 'Other', tools: other})
 
   // Descriptions need room to read, so the list widens to three columns;
   // without any it stays a compact five-column index.
@@ -119,8 +137,8 @@ export function ToolsSection({
         )}
       >
         {groups.map((group) => (
-          <StaggerItem key={group.value}>
-            <h3 className="text-label border-b border-line pb-3 text-ink-3">{group.title}</h3>
+          <StaggerItem key={group._id}>
+            <h3 className="text-label border-b border-line pb-3 text-ink-3">{group.name}</h3>
             <ul className={cn('mt-4', detailed ? 'space-y-6' : 'space-y-3')}>
               {group.tools.map((tool) => (
                 <li key={tool._id} className="flex items-start gap-3">

@@ -3,7 +3,7 @@ import type {SchemaTypeDefinition} from 'sanity'
 import {caseStudy, resultMetric} from './documents/caseStudy'
 import {client} from './documents/client'
 import {contentPiece} from './documents/contentPiece'
-import {certification, stat, tool} from './documents/library'
+import {certification, stat, tool, toolCategory} from './documents/library'
 import {service} from './documents/service'
 import {testimonial} from './documents/testimonial'
 import {cta} from './objects/cta'
@@ -27,6 +27,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   testimonial,
   client,
   stat,
+  toolCategory,
   tool,
   certification,
   // Objects

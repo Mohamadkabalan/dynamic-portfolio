@@ -1,8 +1,7 @@
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
-import {BarChartIcon, CheckmarkCircleIcon, WrenchIcon} from '../../lib/icons'
+import {BarChartIcon, CheckmarkCircleIcon, TagIcon, WrenchIcon} from '../../lib/icons'
 import {defineField, defineType} from 'sanity'
 
-import {TOOL_CATEGORIES, TOOL_CATEGORY_TITLES} from '../../lib/constants'
 import {imageField} from '../shared/fields'
 
 export const stat = defineType({
@@ -55,6 +54,31 @@ export const stat = defineType({
   },
 })
 
+export const toolCategory = defineType({
+  name: 'toolCategory',
+  title: 'Tool category',
+  type: 'document',
+  icon: TagIcon,
+  orderings: [orderRankOrdering],
+  fields: [
+    orderRankField({type: 'toolCategory'}),
+    defineField({
+      name: 'name',
+      title: 'Category name',
+      description:
+        'The column heading in the tools section. Example: "Scheduling" or "AI". Drag categories in the list to change the column order.',
+      type: 'string',
+      validation: (rule) => rule.required().max(30),
+    }),
+  ],
+  preview: {
+    select: {title: 'name'},
+    prepare({title}) {
+      return {title, media: TagIcon}
+    },
+  },
+})
+
 export const tool = defineType({
   name: 'tool',
   title: 'Tool',
@@ -79,9 +103,10 @@ export const tool = defineType({
     defineField({
       name: 'category',
       title: 'Category',
-      description: 'Tools are grouped by category on the site.',
-      type: 'string',
-      options: {list: [...TOOL_CATEGORIES], layout: 'radio', direction: 'horizontal'},
+      description:
+        'The column this tool appears under. Pick one, or choose "Create new" to add a category; categories can also be managed under Library → Tool categories.',
+      type: 'reference',
+      to: [{type: 'toolCategory'}],
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -95,11 +120,11 @@ export const tool = defineType({
     }),
   ],
   preview: {
-    select: {title: 'name', category: 'category', description: 'description', media: 'logo'},
+    select: {title: 'name', category: 'category.name', description: 'description', media: 'logo'},
     prepare({title, category, description, media}) {
       return {
         title,
-        subtitle: [TOOL_CATEGORY_TITLES[category as string], description].filter(Boolean).join(' · '),
+        subtitle: [category, description].filter(Boolean).join(' · '),
         media,
       }
     },

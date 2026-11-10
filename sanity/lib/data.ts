@@ -59,6 +59,7 @@ export const getHomeData = cache(async () => {
       'service',
       'testimonial',
       'tool',
+      'toolCategory',
     ),
   })
   return data
@@ -154,4 +155,5 @@ export type Testimonial = HomeData['testimonials'][number]
 export type Service = HomeData['services'][number]
 export type Stat = HomeData['stats'][number]
 export type Tool = HomeData['tools'][number]
+export type ToolCategory = HomeData['toolCategories'][number]
 export type LogoClient = HomeData['clients'][number]

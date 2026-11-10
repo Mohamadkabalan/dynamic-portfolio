@@ -122,12 +122,18 @@ export const HOME_QUERY = defineQuery(`
       startingPrice
     },
     "testimonials": *[_type == "testimonial"] | order(orderRank asc){${testimonialFields}},
+    "toolCategories": *[_type == "toolCategory"] | order(orderRank asc){_id, name},
     "tools": *[_type == "tool"] | order(orderRank asc){
       _id,
       name,
-      category,
       description,
-      logo{${imageFields}}
+      logo{${imageFields}},
+      // A tool saved before categories became documents still holds the old
+      // text value ("design"); it maps to the seeded category's id.
+      "categoryId": select(
+        defined(category._ref) => category._ref,
+        defined(category) => "toolCategory-" + category
+      )
     }
   }
 `)

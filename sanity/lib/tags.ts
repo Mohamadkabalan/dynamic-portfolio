@@ -17,6 +17,7 @@ export const DOCUMENT_TYPES = [
   'client',
   'stat',
   'tool',
+  'toolCategory',
   'certification',
 ] as const
 

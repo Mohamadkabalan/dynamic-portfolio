@@ -8,6 +8,7 @@
  * Every document has a fixed `_id`, so running the seed again replaces the
  * same documents instead of creating duplicates.
  */
+import {TOOL_CATEGORIES, toolCategoryId} from '../../sanity/lib/constants'
 import type {ImageSpec, PaletteName} from './images'
 
 /* ------------------------------- helpers -------------------------------- */
@@ -527,13 +528,21 @@ export function buildDocuments(image: ImageResolver): SeedDocument[] {
     ['capcut', 'CapCut', 'video', 'Quick reel and TikTok edits with captions and trending audio.'],
     ['premiere', 'Premiere Pro', 'video', 'Longer brand films and multi-clip edits.'],
   ]
-  const tools: SeedDocument[] = TOOLS.map(([id, name, category, description]) => ({
-    _id: `tool-${id}`,
-    _type: 'tool',
-    name,
-    category,
-    description,
-  }))
+  const tools: SeedDocument[] = [
+    // The categories come first so the tools can point at them.
+    ...TOOL_CATEGORIES.map((category) => ({
+      _id: toolCategoryId(category.value),
+      _type: 'toolCategory',
+      name: category.title,
+    })),
+    ...TOOLS.map(([id, name, category, description]) => ({
+      _id: `tool-${id}`,
+      _type: 'tool',
+      name,
+      category: ref(toolCategoryId(category)),
+      description,
+    })),
+  ]
 
   /* Certifications (fictional issuers) */
   const certifications: SeedDocument[] = [
@@ -564,6 +573,7 @@ export const RANKED_TYPES = [
   'testimonial',
   'client',
   'stat',
+  'toolCategory',
   'tool',
   'certification',
 ] as const
