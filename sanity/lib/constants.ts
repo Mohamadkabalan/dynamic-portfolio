@@ -41,6 +41,30 @@ export const TOOL_CATEGORY_TITLES: Record<string, string> = Object.fromEntries(
   TOOL_CATEGORIES.map((category) => [category.value, category.title]),
 )
 
+/**
+ * Spoken-language proficiency, strongest first. `score` is how many of the
+ * five segments of the meter on the About page are filled in.
+ */
+export const LANGUAGE_LEVELS = [
+  {title: 'Native or bilingual', value: 'native', score: 5},
+  {title: 'Fluent', value: 'fluent', score: 4},
+  {title: 'Professional working proficiency', value: 'professional', score: 3},
+  {title: 'Conversational', value: 'conversational', score: 2},
+  {title: 'Basic', value: 'basic', score: 1},
+] as const
+
+export type LanguageLevelValue = (typeof LANGUAGE_LEVELS)[number]['value']
+
+export const LANGUAGE_LEVEL_MAX = 5
+
+export const LANGUAGE_LEVEL_TITLES: Record<string, string> = Object.fromEntries(
+  LANGUAGE_LEVELS.map((level) => [level.value, level.title]),
+)
+
+export const LANGUAGE_LEVEL_SCORES: Record<string, number> = Object.fromEntries(
+  LANGUAGE_LEVELS.map((level) => [level.value, level.score]),
+)
+
 /** Homepage sections the editor can reorder and hide. The hero always comes first. */
 export const HOME_SECTIONS = [
   {title: 'Client logos', value: 'logos'},

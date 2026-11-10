@@ -259,6 +259,13 @@ export function buildDocuments(image: ImageResolver): SeedDocument[] {
       {_key: 'role-2', _type: 'role', role: 'Senior Community Manager', company: 'Northlight Studio (sample)', period: '2021 — 2023', description: 'Led community and content for a portfolio of lifestyle brands, building response playbooks and creator programmes.'},
       {_key: 'role-3', _type: 'role', role: 'Social Media Executive', company: 'Harbour & Vine Agency (sample)', period: '2019 — 2021', description: 'Planned and published multi-platform content calendars and managed day-to-day engagement for retail and hospitality clients.'},
     ],
+    languagesHeading: 'Languages I work in',
+    languages: [
+      {_key: 'lang-1', _type: 'language', name: 'Arabic', level: 'native', note: 'Mother tongue'},
+      {_key: 'lang-2', _type: 'language', name: 'English', level: 'fluent', note: 'Client work, copywriting & reporting'},
+      {_key: 'lang-3', _type: 'language', name: 'French', level: 'professional', note: 'Content & community management'},
+      {_key: 'lang-4', _type: 'language', name: 'German', level: 'conversational', note: 'Learning'},
+    ],
     valuesHeading: 'What I believe',
     values: [
       {_key: 'value-1', _type: 'value', title: 'Community before content', description: 'A post is a conversation starter. The real work happens in the replies, the DMs and the relationships that follow.'},

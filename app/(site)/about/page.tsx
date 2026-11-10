@@ -3,6 +3,7 @@ import type {Metadata} from 'next'
 
 import {Reveal, Stagger, StaggerItem} from '@/components/motion/Reveal'
 import {ContactCta, ToolsSection} from '@/components/sections/HomeSections'
+import {LanguagesSection} from '@/components/sections/Languages'
 import {Availability} from '@/components/shell/Availability'
 import {SetupNotice} from '@/components/shell/SetupNotice'
 import {SocialLinks} from '@/components/shell/SocialLinks'
@@ -158,6 +159,9 @@ export default async function AboutPage() {
           </div>
         </section>
       )}
+
+      {/* Languages */}
+      <LanguagesSection languages={page.languages ?? []} heading={page.languagesHeading} />
 
       {/* Values */}
       {values.length > 0 && (

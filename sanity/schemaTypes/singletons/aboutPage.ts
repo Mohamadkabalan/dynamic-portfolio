@@ -1,3 +1,4 @@
+import {LANGUAGE_LEVEL_TITLES, LANGUAGE_LEVELS} from '../../lib/constants'
 import {UserIcon} from '../../lib/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
@@ -12,6 +13,7 @@ export const aboutPage = defineType({
     {name: 'intro', title: 'Intro', default: true},
     {name: 'approach', title: 'Approach'},
     {name: 'experience', title: 'Experience'},
+    {name: 'languages', title: 'Languages'},
     {name: 'values', title: 'Values'},
     {name: 'seo', title: 'Search & sharing'},
   ],
@@ -127,6 +129,64 @@ export const aboutPage = defineType({
               return {
                 title: [role, company].filter(Boolean).join(' · '),
                 subtitle: period,
+              }
+            },
+          },
+        }),
+      ],
+    }),
+    defineField({
+      name: 'languagesHeading',
+      title: 'Languages heading',
+      description: 'Title above your languages. Example: "Languages I work in".',
+      type: 'string',
+      group: 'languages',
+    }),
+    defineField({
+      name: 'languages',
+      title: 'Languages',
+      description:
+        'The languages you work in, strongest first. Drag to reorder. The section only appears once at least one language is added.',
+      type: 'array',
+      group: 'languages',
+      of: [
+        defineArrayMember({
+          name: 'language',
+          title: 'Language',
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Language',
+              description: 'Example: "Arabic".',
+              type: 'string',
+              validation: (rule) => rule.required().max(40),
+            }),
+            defineField({
+              name: 'level',
+              title: 'Proficiency',
+              type: 'string',
+              options: {
+                list: LANGUAGE_LEVELS.map(({title, value}) => ({title, value})),
+                layout: 'radio',
+              },
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'note',
+              title: 'Note',
+              description:
+                'Optional short line shown under the level. Example: "CEFR C1" or "Client work & copywriting".',
+              type: 'string',
+              validation: (rule) => rule.max(60),
+            }),
+          ],
+          preview: {
+            select: {title: 'name', level: 'level', note: 'note'},
+            prepare({title, level, note}) {
+              return {
+                title,
+                subtitle: [LANGUAGE_LEVEL_TITLES[level] ?? level, note].filter(Boolean).join(' · '),
               }
             },
           },

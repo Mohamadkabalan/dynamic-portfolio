@@ -205,6 +205,8 @@ export const ABOUT_QUERY = defineQuery(`
       approach[]{_key, title, description},
       experienceHeading,
       experience[]{_key, role, company, period, description},
+      languagesHeading,
+      languages[]{_key, name, level, note},
       valuesHeading,
       values[]{_key, title, description},
       seo{${seoFields}}

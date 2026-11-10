@@ -2764,6 +2764,86 @@
         },
         "optional": true
       },
+      "languagesHeading": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "languages": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "name": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "level": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "union",
+                  "of": [
+                    {
+                      "type": "string",
+                      "value": "native"
+                    },
+                    {
+                      "type": "string",
+                      "value": "fluent"
+                    },
+                    {
+                      "type": "string",
+                      "value": "professional"
+                    },
+                    {
+                      "type": "string",
+                      "value": "conversational"
+                    },
+                    {
+                      "type": "string",
+                      "value": "basic"
+                    }
+                  ]
+                },
+                "optional": false
+              },
+              "note": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "_type": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string",
+                  "value": "language"
+                }
+              }
+            },
+            "rest": {
+              "type": "object",
+              "attributes": {
+                "_key": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "optional": true
+      },
       "valuesHeading": {
         "type": "objectAttribute",
         "value": {

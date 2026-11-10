@@ -142,6 +142,8 @@ carousel indicator, hover-to-play), `CarouselViewer` (swipe/scroll-snap),
 
 **Sections** — `Hero`, `LogoMarquee`, `StatsBand`, `FeaturedWork`,
 `FeedSection`, `ServicesSection`, `TestimonialStories`, `ToolsSection`,
+`LanguagesSection` (About page: language, proficiency label and a decorative
+five-segment meter in the accent colour; the label carries the meaning),
 `ContactCta`.
 
 **Work** — `CaseStudyCard`, `WorkFilter`, `MetricCard`, `Gallery`,
