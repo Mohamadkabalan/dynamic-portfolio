@@ -122,7 +122,13 @@ export const HOME_QUERY = defineQuery(`
       startingPrice
     },
     "testimonials": *[_type == "testimonial"] | order(orderRank asc){${testimonialFields}},
-    "tools": *[_type == "tool"] | order(orderRank asc){_id, name, category, logo{${imageFields}}}
+    "tools": *[_type == "tool"] | order(orderRank asc){
+      _id,
+      name,
+      category,
+      description,
+      logo{${imageFields}}
+    }
   }
 `)
 
@@ -216,8 +222,7 @@ export const ABOUT_QUERY = defineQuery(`
       year,
       credentialUrl,
       badge{${imageFields}}
-    },
-    "tools": *[_type == "tool"] | order(orderRank asc){_id, name, category, logo{${imageFields}}}
+    }
   }
 `)
 

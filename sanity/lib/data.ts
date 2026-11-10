@@ -119,7 +119,7 @@ export const getAboutData = cache(async () => {
   const {data} = await sanityFetch({
     query: ABOUT_QUERY,
     ...published,
-    tags: tags('aboutPage', 'certification', 'tool'),
+    tags: tags('aboutPage', 'certification'),
   })
   return data
 })

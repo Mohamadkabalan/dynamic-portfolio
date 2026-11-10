@@ -6,6 +6,7 @@ import {ButtonLink} from '@/components/ui/Button'
 import {SanityImage} from '@/components/ui/SanityImage'
 import {SectionHeading} from '@/components/ui/SectionHeading'
 import {ServiceIcon} from '@/components/ui/ServiceIcon'
+import {cn} from '@/lib/utils'
 import {TOOL_CATEGORIES} from '@/sanity/lib/constants'
 import type {FeedItem, Service, Tool} from '@/sanity/lib/data'
 import {hasAsset} from '@/sanity/lib/image'
@@ -103,16 +104,26 @@ export function ToolsSection({
     tools: tools.filter((tool) => tool.category === category.value),
   })).filter((group) => group.tools.length > 0)
 
+  // Descriptions need room to read, so the list widens to three columns;
+  // without any it stays a compact five-column index.
+  const detailed = tools.some((tool) => tool.description?.trim())
+
   return (
     <section aria-labelledby="tools-heading" className="shell section-y">
       <SectionHeading id="tools-heading" as={headingLevel} {...copy} />
-      <Stagger as="div" className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 md:mt-16 lg:grid-cols-5">
+      <Stagger
+        as="div"
+        className={cn(
+          'mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 md:mt-16',
+          detailed ? 'lg:grid-cols-3' : 'lg:grid-cols-5',
+        )}
+      >
         {groups.map((group) => (
           <StaggerItem key={group.value}>
             <h3 className="text-label border-b border-line pb-3 text-ink-3">{group.title}</h3>
-            <ul className="mt-4 space-y-3">
+            <ul className={cn('mt-4', detailed ? 'space-y-6' : 'space-y-3')}>
               {group.tools.map((tool) => (
-                <li key={tool._id} className="flex items-center gap-3">
+                <li key={tool._id} className="flex items-start gap-3">
                   <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-line bg-card">
                     {hasAsset(tool.logo) ? (
                       <SanityImage
@@ -129,7 +140,12 @@ export function ToolsSection({
                       </span>
                     )}
                   </span>
-                  <span className="font-medium">{tool.name}</span>
+                  <div className="min-w-0 pt-2">
+                    <p className="font-medium leading-tight">{tool.name}</p>
+                    {tool.description?.trim() && (
+                      <p className="mt-1.5 text-sm leading-snug text-ink-2">{tool.description}</p>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>

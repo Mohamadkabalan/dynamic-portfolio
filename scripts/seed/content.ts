@@ -514,24 +514,25 @@ export function buildDocuments(image: ImageResolver): SeedDocument[] {
   ]
 
   /* Tools */
-  const TOOLS: Array<[string, string, string]> = [
-    ['later', 'Later', 'scheduling'],
-    ['meta-business-suite', 'Meta Business Suite', 'scheduling'],
-    ['notion', 'Notion', 'scheduling'],
-    ['canva', 'Canva', 'design'],
-    ['figma', 'Figma', 'design'],
-    ['metricool', 'Metricool', 'analytics'],
-    ['google-analytics', 'Google Analytics', 'analytics'],
-    ['meta-ads-manager', 'Meta Ads Manager', 'ads'],
-    ['tiktok-ads', 'TikTok Ads Manager', 'ads'],
-    ['capcut', 'CapCut', 'video'],
-    ['premiere', 'Premiere Pro', 'video'],
+  const TOOLS: Array<[string, string, string, string]> = [
+    ['later', 'Later', 'scheduling', 'Visual grid planning and scheduling for Instagram and TikTok.'],
+    ['meta-business-suite', 'Meta Business Suite', 'scheduling', 'Publishing, inbox and comment moderation across Facebook and Instagram.'],
+    ['notion', 'Notion', 'scheduling', 'Content calendars, briefs and approval workflows shared with clients.'],
+    ['canva', 'Canva', 'design', 'Day-to-day posts, stories and carousels from brand templates.'],
+    ['figma', 'Figma', 'design', 'Brand templates and campaign mock-ups built with designers.'],
+    ['metricool', 'Metricool', 'analytics', 'Cross-platform reporting and best-time-to-post analysis.'],
+    ['google-analytics', 'Google Analytics', 'analytics', 'Following what social traffic does once it lands on the website.'],
+    ['meta-ads-manager', 'Meta Ads Manager', 'ads', 'Boosts and full campaigns for launches and lead generation.'],
+    ['tiktok-ads', 'TikTok Ads Manager', 'ads', 'Spark Ads built on the best-performing organic videos.'],
+    ['capcut', 'CapCut', 'video', 'Quick reel and TikTok edits with captions and trending audio.'],
+    ['premiere', 'Premiere Pro', 'video', 'Longer brand films and multi-clip edits.'],
   ]
-  const tools: SeedDocument[] = TOOLS.map(([id, name, category]) => ({
+  const tools: SeedDocument[] = TOOLS.map(([id, name, category, description]) => ({
     _id: `tool-${id}`,
     _type: 'tool',
     name,
     category,
+    description,
   }))
 
   /* Certifications (fictional issuers) */

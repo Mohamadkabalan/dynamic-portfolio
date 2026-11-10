@@ -84,11 +84,24 @@ export const tool = defineType({
       options: {list: [...TOOL_CATEGORIES], layout: 'radio', direction: 'horizontal'},
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'description',
+      title: 'How you use it',
+      description:
+        'Optional. One short sentence on what you do with this tool, shown under its name. Example: "Content calendars and monthly reports for every client account." Once any tool has one, the section switches to a roomier layout.',
+      type: 'text',
+      rows: 2,
+      validation: (rule) => rule.max(140),
+    }),
   ],
   preview: {
-    select: {title: 'name', category: 'category', media: 'logo'},
-    prepare({title, category, media}) {
-      return {title, subtitle: TOOL_CATEGORY_TITLES[category as string], media}
+    select: {title: 'name', category: 'category', description: 'description', media: 'logo'},
+    prepare({title, category, description, media}) {
+      return {
+        title,
+        subtitle: [TOOL_CATEGORY_TITLES[category as string], description].filter(Boolean).join(' · '),
+        media,
+      }
     },
   },
 })
