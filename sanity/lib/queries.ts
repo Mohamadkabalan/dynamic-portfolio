@@ -78,8 +78,7 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
     contactEmail,
     location,
     "resumeUrl": resume.asset->url,
-    workPage{heading, intro},
-    contactPage{heading, intro, budgetOptions, successMessage},
+    contactPage{budgetOptions, successMessage},
     seo{titleTemplate, description, ogImage{${imageFields}}},
     footerText
   }
@@ -112,8 +111,6 @@ export const HOME_QUERY = defineQuery(`
       logo{${imageFields}}
     },
     "stats": *[_type == "stat"] | order(orderRank asc){_id, label, value, suffix, description},
-    "featuredWork": *[_type == "caseStudy" && featured == true && defined(slug.current)]
-      | order(orderRank asc)[0...6]{${caseStudyCardFields}},
     "feed": *[_type == "contentPiece" && featured != false]
       | order(orderRank asc)[0...24]{${feedItemFields}},
     "services": *[_type == "service"] | order(orderRank asc){
@@ -131,8 +128,9 @@ export const HOME_QUERY = defineQuery(`
 
 /* --------------------------------- work --------------------------------- */
 
+/** Every case study for the Work section: pinned ("featured") ones first, then the editor's order. */
 export const WORK_INDEX_QUERY = defineQuery(`
-  *[_type == "caseStudy" && defined(slug.current)] | order(orderRank asc){
+  *[_type == "caseStudy" && defined(slug.current)] | order(featured desc, orderRank asc){
     ${caseStudyCardFields}
   }
 `)
@@ -208,8 +206,7 @@ export const ABOUT_QUERY = defineQuery(`
       languagesHeading,
       languages[]{_key, name, level, note},
       valuesHeading,
-      values[]{_key, title, description},
-      seo{${seoFields}}
+      values[]{_key, title, description}
     },
     "certifications": *[_type == "certification"] | order(orderRank asc){
       _id,

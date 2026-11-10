@@ -28,9 +28,9 @@ Status key: `[x]` done · `[~]` in progress · `[ ]` to do
 - [x] Commit
 
 ## Phase 4 — Pages and sections
-- [x] Home (hero, logo marquee, stats, featured work, feed + lightbox, services, testimonials, tools, contact CTA)
-- [x] /work (filters), /work/[slug]
-- [x] /about, /contact, custom 404
+- [x] One page: hero, logo marquee, stats, work (all case studies + filters), feed + lightbox, services, testimonials, about, tools, contact form — ordered in the CMS
+- [x] /work/[slug] case study pages; /work, /about and /contact redirect to their sections
+- [x] Custom 404
 - [x] Commit
 
 ## Phase 5 — Contact form, SEO, OG images, sitemap

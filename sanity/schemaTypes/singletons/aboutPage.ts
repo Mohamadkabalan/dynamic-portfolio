@@ -6,7 +6,7 @@ import {imageField} from '../shared/fields'
 
 export const aboutPage = defineType({
   name: 'aboutPage',
-  title: 'About page',
+  title: 'About section',
   type: 'document',
   icon: UserIcon,
   groups: [
@@ -15,13 +15,13 @@ export const aboutPage = defineType({
     {name: 'experience', title: 'Experience'},
     {name: 'languages', title: 'Languages'},
     {name: 'values', title: 'Values'},
-    {name: 'seo', title: 'Search & sharing'},
   ],
   fields: [
     defineField({
       name: 'headline',
       title: 'Headline',
-      description: 'The big line at the top of the about page. Example: "The person behind the posts."',
+      description:
+        'The big line at the top of the About section. Example: "The person behind the posts."',
       type: 'string',
       group: 'intro',
       validation: (rule) => rule.max(90),
@@ -231,17 +231,11 @@ export const aboutPage = defineType({
         }),
       ],
     }),
-    defineField({
-      name: 'seo',
-      title: 'Search & social sharing',
-      type: 'seo',
-      group: 'seo',
-    }),
   ],
   preview: {
     select: {subtitle: 'headline', media: 'portrait'},
     prepare({subtitle, media}) {
-      return {title: 'About page', subtitle, media}
+      return {title: 'About section', subtitle, media}
     },
   },
 })

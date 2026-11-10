@@ -59,7 +59,7 @@ export function Header({settings}: {settings: SiteSettings | null}) {
             className="mr-3 hidden lg:inline-flex"
           />
           <ThemeToggle />
-          <ButtonLink href="/contact" className="ml-1 hidden md:inline-flex">
+          <ButtonLink href="/#contact" className="ml-1 hidden md:inline-flex">
             Let&rsquo;s talk
           </ButtonLink>
           <MobileMenu>

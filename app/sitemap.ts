@@ -6,45 +6,27 @@ import {getSitemapData} from '@/sanity/lib/data'
 /**
  * /sitemap.xml — built from CMS data and cached. Publishing or deleting a
  * case study updates it automatically (no rebuild).
+ *
+ * The site is one page plus a page per case study; the sections (#work,
+ * #about, #contact) are part of the home page and are not listed separately.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const data = await getSitemapData()
   const caseStudies = data?.caseStudies ?? []
 
-  const latestCaseStudy = caseStudies
-    .map((study) => study._updatedAt)
+  // The home page changes whenever any of the content on it does.
+  const homeModified = [data?.home, data?.about, data?.settings, ...caseStudies.map((study) => study._updatedAt)]
+    .filter((date): date is string => Boolean(date))
     .sort()
     .at(-1)
 
-  const pages: MetadataRoute.Sitemap = [
+  return [
     {
       url: `${siteUrl}/`,
-      lastModified: data?.home ?? undefined,
+      lastModified: homeModified,
       changeFrequency: 'weekly',
       priority: 1,
     },
-    {
-      url: `${siteUrl}/work`,
-      lastModified: latestCaseStudy ?? undefined,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${siteUrl}/about`,
-      lastModified: data?.about ?? undefined,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/contact`,
-      lastModified: data?.settings ?? undefined,
-      changeFrequency: 'yearly',
-      priority: 0.6,
-    },
-  ]
-
-  return [
-    ...pages,
     ...caseStudies.map((study) => ({
       url: `${siteUrl}/work/${study.slug}`,
       lastModified: study._updatedAt,

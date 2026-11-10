@@ -4,15 +4,19 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 import {HOME_SECTIONS, HOME_SECTION_TITLES} from '../../lib/constants'
 import {imageField} from '../shared/fields'
 
+/** The About section's headings live in the "About section" document, so its row only sets position and visibility. */
+const isAboutRow = ({parent}: {parent?: unknown}) =>
+  (parent as {section?: string} | undefined)?.section === 'about'
+
 export const homeSection = defineType({
   name: 'homeSection',
-  title: 'Homepage section',
+  title: 'Page section',
   type: 'object',
   fields: [
     defineField({
       name: 'section',
       title: 'Section',
-      description: 'Which part of the homepage this row controls.',
+      description: 'Which part of the page this row controls.',
       type: 'string',
       options: {list: [...HOME_SECTIONS], layout: 'dropdown'},
       validation: (rule) => rule.required(),
@@ -27,8 +31,9 @@ export const homeSection = defineType({
     defineField({
       name: 'eyebrow',
       title: 'Small label',
-      description: 'Optional tiny label above the heading. Example: "Selected work".',
+      description: 'Optional tiny label above the heading. Example: "Case studies".',
       type: 'string',
+      hidden: isAboutRow,
       validation: (rule) => rule.max(40),
     }),
     defineField({
@@ -36,6 +41,7 @@ export const homeSection = defineType({
       title: 'Heading',
       description: 'The big title of the section. Leave empty to use the built-in heading.',
       type: 'string',
+      hidden: isAboutRow,
       validation: (rule) => rule.max(90),
     }),
     defineField({
@@ -44,6 +50,7 @@ export const homeSection = defineType({
       description: 'Optional sentence under the heading.',
       type: 'text',
       rows: 2,
+      hidden: isAboutRow,
       validation: (rule) => rule.max(240),
     }),
   ],
@@ -194,9 +201,9 @@ export const homePage = defineType({
     }),
     defineField({
       name: 'sections',
-      title: 'Homepage sections',
+      title: 'Page sections',
       description:
-        'Drag rows to change the order sections appear in. Open a row to hide the section or change its heading. A section also hides itself automatically when it has no content.',
+        'The site is one page; these rows are its sections, in order. Drag rows to reorder them; open a row to hide the section or change its heading. Work, About and Contact are what the menu links to — add a row for each to choose where it sits (otherwise Work follows the stats, About comes before Contact, and Contact is last). A section also hides itself when it has no content.',
       type: 'array',
       group: 'sections',
       of: [defineArrayMember({type: 'homeSection'})],

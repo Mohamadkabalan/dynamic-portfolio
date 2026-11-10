@@ -97,6 +97,15 @@ const nextConfig: NextConfig = {
     remotePatterns: [{protocol: 'https', hostname: 'cdn.sanity.io', pathname: '/images/**'}],
   },
 
+  /** The site is one page: the former page addresses lead to the matching section. */
+  async redirects() {
+    return [
+      {source: '/work', destination: '/#work', permanent: false},
+      {source: '/about', destination: '/#about', permanent: false},
+      {source: '/contact', destination: '/#contact', permanent: false},
+    ]
+  },
+
   /**
    * Security headers. These are set here (not only in netlify.toml) because
    * Netlify's own header rules do not apply to pages rendered by Next.js.

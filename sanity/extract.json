@@ -716,6 +716,10 @@
               },
               {
                 "type": "string",
+                "value": "about"
+              },
+              {
+                "type": "string",
                 "value": "tools"
               },
               {
@@ -2894,14 +2898,6 @@
           }
         },
         "optional": true
-      },
-      "seo": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "inline",
-          "name": "seo"
-        },
-        "optional": true
       }
     }
   },
@@ -3425,48 +3421,11 @@
         },
         "optional": true
       },
-      "workPage": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "object",
-          "attributes": {
-            "heading": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "string"
-              },
-              "optional": true
-            },
-            "intro": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "string"
-              },
-              "optional": true
-            }
-          }
-        },
-        "optional": true
-      },
       "contactPage": {
         "type": "objectAttribute",
         "value": {
           "type": "object",
           "attributes": {
-            "heading": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "string"
-              },
-              "optional": true
-            },
-            "intro": {
-              "type": "objectAttribute",
-              "value": {
-                "type": "string"
-              },
-              "optional": true
-            },
             "budgetOptions": {
               "type": "objectAttribute",
               "value": {

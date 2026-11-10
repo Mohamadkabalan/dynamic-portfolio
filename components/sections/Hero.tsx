@@ -5,6 +5,7 @@ import {LoopingVideo} from '@/components/ui/LoopingVideo'
 import {PhoneFrame} from '@/components/ui/PhoneFrame'
 import {PlatformIcon} from '@/components/ui/PlatformIcon'
 import {SanityImage} from '@/components/ui/SanityImage'
+import {resolveCmsHref} from '@/lib/site'
 import {cn, splitHighlight} from '@/lib/utils'
 import {PLATFORM_TITLES} from '@/sanity/lib/constants'
 import type {HomeData, SiteSettings} from '@/sanity/lib/data'
@@ -79,7 +80,7 @@ export function Hero({hero, settings}: HeroProps) {
           {(hero.primaryCta?.href || hero.secondaryCta?.href) && (
             <div className="mt-9 flex flex-wrap gap-3 motion-safe:animate-rise motion-safe:[animation-delay:160ms]">
               {hero.primaryCta?.href && hero.primaryCta.label && (
-                <ButtonLink href={hero.primaryCta.href} size="lg">
+                <ButtonLink href={resolveCmsHref(hero.primaryCta.href)} size="lg">
                   {hero.primaryCta.label}
                   <ArrowDownRight
                     aria-hidden
@@ -88,7 +89,11 @@ export function Hero({hero, settings}: HeroProps) {
                 </ButtonLink>
               )}
               {hero.secondaryCta?.href && hero.secondaryCta.label && (
-                <ButtonLink href={hero.secondaryCta.href} size="lg" variant="secondary">
+                <ButtonLink
+                  href={resolveCmsHref(hero.secondaryCta.href)}
+                  size="lg"
+                  variant="secondary"
+                >
                   {hero.secondaryCta.label}
                   <ArrowUpRight aria-hidden className="size-[1.125rem]" />
                 </ButtonLink>

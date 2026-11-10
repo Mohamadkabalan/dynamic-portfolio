@@ -3,6 +3,7 @@ import './globals.css'
 import type {Metadata, Viewport} from 'next'
 
 import {MotionProvider} from '@/components/motion/MotionProvider'
+import {ActiveSectionProvider} from '@/components/shell/ActiveSection'
 import {Footer} from '@/components/shell/Footer'
 import {Header} from '@/components/shell/Header'
 import {accentCss, accentTokens, PAPER_DARK, PAPER_LIGHT} from '@/lib/color'
@@ -101,7 +102,9 @@ export default async function SiteLayout({children}: {children: React.ReactNode}
           Skip to content
         </a>
         <MotionProvider>
-          <Header settings={settings} />
+          <ActiveSectionProvider>
+            <Header settings={settings} />
+          </ActiveSectionProvider>
           <main id="main" tabIndex={-1} className="outline-none">
             {children}
           </main>

@@ -14,7 +14,7 @@ export function Eyebrow({children, className}: {children: ReactNode; className?:
 
 interface SectionHeadingProps {
   id?: string
-  eyebrow?: string | null
+  eyebrow?: ReactNode
   heading: string
   intro?: string | null
   /** Optional element aligned to the right of the heading on wide screens (e.g. a link). */

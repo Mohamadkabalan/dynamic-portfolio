@@ -73,6 +73,11 @@ Measure: body copy is capped at ~68 characters (`max-w-prose-editorial`).
   layout is designed for a 360–430px viewport and enhanced upwards.
 - Hairline rules (`--line`) separate sections instead of heavy boxes.
 - Touch targets ≥ 44 × 44px.
+- One page: the menu scrolls to `#work`, `#about` and `#contact` and highlights
+  the section in view. `scroll-padding-top` keeps anchors clear of the sticky
+  header; smooth scrolling is only on without reduced motion. Case studies keep
+  their own pages at `/work/[slug]`; the old `/work`, `/about` and `/contact`
+  addresses redirect to the sections.
 
 ## 4. Radii, borders, elevation
 

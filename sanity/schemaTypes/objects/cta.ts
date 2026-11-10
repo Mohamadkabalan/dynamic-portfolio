@@ -18,7 +18,7 @@ export const cta = defineType({
       name: 'href',
       title: 'Where does it go?',
       description:
-        'For a page on this site, type the path, e.g. /work or /contact. For another website, paste the full link starting with https://',
+        'For a section of this site, type its address: /#work, /#about or /#contact. For a case study, its link, e.g. /work/my-project. For another website, paste the full link starting with https://',
       type: 'string',
       validation: (rule) =>
         rule.custom((href, context) => {

@@ -85,7 +85,7 @@ export default async function CaseStudyPage({params}: PageProps<'/work/[slug]'>)
 
       <header className="shell pb-10 pt-8 md:pb-14 md:pt-12">
         <Link
-          href="/work"
+          href="/#work"
           className="group mb-8 inline-flex min-h-11 items-center gap-2 text-sm text-ink-2 transition-colors hover:text-ink"
         >
           <ArrowLeft

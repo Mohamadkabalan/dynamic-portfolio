@@ -6,9 +6,8 @@ import {ButtonLink} from '@/components/ui/Button'
 import {SanityImage} from '@/components/ui/SanityImage'
 import {SectionHeading} from '@/components/ui/SectionHeading'
 import {ServiceIcon} from '@/components/ui/ServiceIcon'
-import {CaseStudyCard} from '@/components/work/CaseStudyCard'
 import {TOOL_CATEGORIES} from '@/sanity/lib/constants'
-import type {CaseStudyCard as CaseStudyCardData, FeedItem, Service, Tool} from '@/sanity/lib/data'
+import type {FeedItem, Service, Tool} from '@/sanity/lib/data'
 import {hasAsset} from '@/sanity/lib/image'
 
 /** The heading copy for a section, after CMS values and defaults are merged. */
@@ -16,37 +15,6 @@ export interface SectionCopy {
   eyebrow?: string | null
   heading: string
   intro?: string | null
-}
-
-/* ----------------------------- Featured work ----------------------------- */
-
-export function FeaturedWork({studies, copy}: {studies: CaseStudyCardData[]; copy: SectionCopy}) {
-  if (studies.length === 0) return null
-
-  return (
-    <section aria-labelledby="featured-work-heading" className="shell section-y">
-      <SectionHeading
-        id="featured-work-heading"
-        {...copy}
-        action={
-          <ButtonLink href="/work" variant="secondary">
-            All case studies <ArrowUpRight aria-hidden className="size-4" />
-          </ButtonLink>
-        }
-      />
-      <Stagger className="mt-12 grid gap-x-8 gap-y-14 md:mt-16 md:grid-cols-2">
-        {studies.map((study, index) => (
-          <StaggerItem key={study._id} className={index === 0 ? 'md:col-span-2' : undefined}>
-            <CaseStudyCard
-              study={study}
-              index={index}
-              variant={index === 0 ? 'feature' : 'default'}
-            />
-          </StaggerItem>
-        ))}
-      </Stagger>
-    </section>
-  )
 }
 
 /* --------------------------------- Feed ---------------------------------- */
@@ -184,7 +152,7 @@ export function ContactCta({copy, email}: {copy: SectionCopy; email?: string | n
         </h2>
         {copy.intro && <p className="text-lead mt-6 max-w-xl opacity-90">{copy.intro}</p>}
         <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <ButtonLink href="/contact" size="lg" variant="inverse">
+          <ButtonLink href="/#contact" size="lg" variant="inverse">
             Start a project <ArrowUpRight aria-hidden className="size-[1.125rem]" />
           </ButtonLink>
           {email && (

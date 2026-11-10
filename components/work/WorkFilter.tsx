@@ -89,7 +89,7 @@ export function WorkFilter({studies}: WorkFilterProps) {
               className="motion-safe:animate-rise"
               style={{animationDelay: `${Math.min(index, 6) * 60}ms`}}
             >
-              <CaseStudyCard study={study} headingLevel="h2" preload={index === 0} />
+              <CaseStudyCard study={study} />
             </li>
           ))}
         </ul>

@@ -57,7 +57,7 @@ export const structure: StructureResolver = (S, context: StructureResolverContex
             .title('Pages')
             .items([
               singleton(S, 'homePage', 'Home page', HomeIcon),
-              singleton(S, 'aboutPage', 'About page', UserIcon),
+              singleton(S, 'aboutPage', 'About section', UserIcon),
             ]),
         ),
       S.divider(),

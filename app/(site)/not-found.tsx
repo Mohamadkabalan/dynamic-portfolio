@@ -20,7 +20,7 @@ export default function NotFound() {
         still one tap away.
       </p>
       <div className="mt-10 flex flex-wrap gap-3">
-        <ButtonLink href="/work" size="lg">
+        <ButtonLink href="/#work" size="lg">
           See the work
         </ButtonLink>
         <ButtonLink href="/" size="lg" variant="secondary">

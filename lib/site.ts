@@ -1,11 +1,33 @@
 import type {SiteSettings} from '@/sanity/lib/data'
 
-/** Main navigation. Labels are structural, so they live in code rather than the CMS. */
+/**
+ * Main navigation. The site is one page: each link scrolls to a section
+ * (`id` is the section's anchor). Labels are structural, so they live in code.
+ */
 export const NAV_LINKS = [
-  {href: '/work', label: 'Work'},
-  {href: '/about', label: 'About'},
-  {href: '/contact', label: 'Contact'},
+  {id: 'work', href: '/#work', label: 'Work'},
+  {id: 'about', href: '/#about', label: 'About'},
+  {id: 'contact', href: '/#contact', label: 'Contact'},
 ] as const
+
+/** Addresses of the former standalone pages, mapped to their sections. */
+const SECTION_FOR_PATH: Record<string, string> = {
+  '/work': '/#work',
+  '/about': '/#about',
+  '/contact': '/#contact',
+}
+
+/**
+ * Normalises a link typed into the CMS (e.g. a hero button): "/work" and
+ * "#work" both become "/#work", which scrolls on the home page and navigates
+ * from any other page. Everything else is returned unchanged.
+ */
+export function resolveCmsHref(href: string): string {
+  const trimmed = href.trim()
+  if (trimmed.startsWith('#')) return `/${trimmed}`
+  const path = trimmed.replace(/\/+$/, '') || '/'
+  return SECTION_FOR_PATH[path] ?? trimmed
+}
 
 /** Sensible text for when a field has not been filled in yet. */
 export const FALLBACKS = {

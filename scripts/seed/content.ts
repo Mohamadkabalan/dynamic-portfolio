@@ -176,15 +176,7 @@ export function buildDocuments(image: ImageResolver): SeedDocument[] {
     availability: {isAvailable: true, text: 'Booking new clients for next quarter'},
     contactEmail: 'hello@example.com',
     location: 'Working with brands worldwide',
-    workPage: {
-      heading: 'Work that earns the scroll-stop.',
-      intro:
-        'Strategy, content and community management for brands that want more than vanity metrics. Filter by platform or industry.',
-    },
     contactPage: {
-      heading: 'Let’s build something people talk about.',
-      intro:
-        'Share a few details about your brand and goals. I read every message and reply within two working days.',
       budgetOptions: [
         'Under $1,000 / month',
         '$1,000 – $2,500 / month',
@@ -213,8 +205,8 @@ export function buildDocuments(image: ImageResolver): SeedDocument[] {
       highlight: 'community',
       subheadline:
         'Strategy, content and day-to-day community management for brands on Instagram, TikTok, LinkedIn and Facebook — built to earn attention and keep it.',
-      primaryCta: {_type: 'cta', label: 'See the work', href: '/work'},
-      secondaryCta: {_type: 'cta', label: 'Start a project', href: '/contact'},
+      primaryCta: {_type: 'cta', label: 'See the work', href: '/#work'},
+      secondaryCta: {_type: 'cta', label: 'Start a project', href: '/#contact'},
       mediaType: 'image',
       image: image('hero', 'Portrait of Sukaina against a warm backdrop'),
       statChips: [
@@ -226,12 +218,13 @@ export function buildDocuments(image: ImageResolver): SeedDocument[] {
     sections: [
       {_key: 'logos', _type: 'homeSection', section: 'logos', enabled: true, heading: 'Trusted by brands that care about community'},
       {_key: 'stats', _type: 'homeSection', section: 'stats', enabled: true, eyebrow: 'By the numbers', heading: 'Results that travel beyond the feed.'},
-      {_key: 'featuredWork', _type: 'homeSection', section: 'featuredWork', enabled: true, eyebrow: 'Selected work', heading: 'Case studies', intro: 'A few projects where strategy, content and community pulled in the same direction.'},
+      {_key: 'featuredWork', _type: 'homeSection', section: 'featuredWork', enabled: true, eyebrow: 'Case studies', heading: 'Work that earns the scroll-stop.', intro: 'Strategy, content and community management for brands that want more than vanity metrics. Filter by platform or industry.'},
       {_key: 'feed', _type: 'homeSection', section: 'feed', enabled: true, eyebrow: 'The feed', heading: 'Content, as it lived on the timeline.', intro: 'Posts, carousels, reels and stories — tap any piece for the caption and the numbers.'},
       {_key: 'services', _type: 'homeSection', section: 'services', enabled: true, eyebrow: 'Services', heading: 'How I can help'},
       {_key: 'testimonials', _type: 'homeSection', section: 'testimonials', enabled: true, eyebrow: 'Kind words', heading: 'What clients say'},
+      {_key: 'about', _type: 'homeSection', section: 'about', enabled: true},
       {_key: 'tools', _type: 'homeSection', section: 'tools', enabled: true, eyebrow: 'Toolkit', heading: 'The tools behind the work'},
-      {_key: 'contactCta', _type: 'homeSection', section: 'contactCta', enabled: true, eyebrow: 'Next step', heading: 'Have a brand that deserves a louder room?', intro: 'Tell me where you are and where you want to be. I reply within two working days.'},
+      {_key: 'contactCta', _type: 'homeSection', section: 'contactCta', enabled: true, eyebrow: 'Contact', heading: 'Let’s build something people talk about.', intro: 'Share a few details about your brand and goals. I read every message and reply within two working days.'},
     ],
   }
 

@@ -1,40 +1,30 @@
 import {ArrowUpRight, Download} from 'lucide-react'
-import type {Metadata} from 'next'
 
 import {Reveal, Stagger, StaggerItem} from '@/components/motion/Reveal'
-import {ContactCta, ToolsSection} from '@/components/sections/HomeSections'
 import {LanguagesSection} from '@/components/sections/Languages'
 import {Availability} from '@/components/shell/Availability'
-import {SetupNotice} from '@/components/shell/SetupNotice'
 import {SocialLinks} from '@/components/shell/SocialLinks'
 import {ButtonLink} from '@/components/ui/Button'
 import {RichText} from '@/components/ui/RichText'
 import {SanityImage} from '@/components/ui/SanityImage'
 import {Eyebrow} from '@/components/ui/SectionHeading'
-import {JsonLd, personJsonLd} from '@/lib/jsonld'
-import {pageMetadata} from '@/lib/metadata'
-import {siteName, siteTitle} from '@/lib/site'
-import {isSanityConfigured} from '@/sanity/env'
-import {getAboutData, getSiteSettings} from '@/sanity/lib/data'
+import {siteName} from '@/lib/site'
+import type {AboutData, SiteSettings} from '@/sanity/lib/data'
 import {hasAsset} from '@/sanity/lib/image'
 
-export async function generateMetadata(): Promise<Metadata> {
-  const [about, settings] = await Promise.all([getAboutData(), getSiteSettings()])
-  return pageMetadata({
-    settings,
-    seo: about?.page?.seo,
-    title: 'About',
-    description: `About ${siteName(settings)}, ${siteTitle(settings)}.`,
-    path: '/about',
-  })
+interface AboutSectionProps {
+  about: AboutData
+  settings: SiteSettings | null
 }
 
-export default async function AboutPage() {
-  if (!isSanityConfigured) return <SetupNotice state="connect" />
-
-  const [about, settings] = await Promise.all([getAboutData(), getSiteSettings()])
-  const page = about?.page
-  if (!about || !page) return <SetupNotice state="content" />
+/**
+ * The "About" part of the one-page site: intro with portrait, approach,
+ * experience, languages, values and certifications. The "About" link in the
+ * menu lands on the intro; the wrapper keeps the link highlighted throughout.
+ */
+export function AboutSection({about, settings}: AboutSectionProps) {
+  const page = about.page
+  if (!page) return null
 
   const name = siteName(settings)
   const approach = page.approach ?? []
@@ -43,21 +33,19 @@ export default async function AboutPage() {
   const certifications = about.certifications
 
   return (
-    <>
-      <JsonLd data={personJsonLd(settings)} />
-
+    <div id="about">
       {/* Intro */}
-      <section className="shell pb-(--section-y) pt-12 md:pt-20">
+      <section aria-labelledby="about-heading" className="shell section-y">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-7">
+          <Reveal className="lg:col-span-7">
             <Eyebrow className="mb-6">About</Eyebrow>
-            <h1 className="text-display-xl motion-safe:animate-rise">
+            <h2 id="about-heading" className="text-display-lg">
               {page.headline?.trim() || `Hi, I'm ${name}.`}
-            </h1>
+            </h2>
             <RichText value={page.bio} className="mt-9 max-w-prose-editorial" />
 
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              <ButtonLink href="/contact" size="lg">
+              <ButtonLink href="/#contact" size="lg">
                 Work with me <ArrowUpRight aria-hidden className="size-[1.125rem]" />
               </ButtonLink>
               {settings?.resumeUrl && (
@@ -71,9 +59,9 @@ export default async function AboutPage() {
                 </ButtonLink>
               )}
             </div>
-          </div>
+          </Reveal>
 
-          <div className="lg:col-span-5">
+          <Reveal delay={0.1} className="lg:col-span-5">
             {hasAsset(page.portrait) && (
               <div className="relative mx-auto max-w-md lg:ml-auto lg:mr-0">
                 <span
@@ -86,7 +74,6 @@ export default async function AboutPage() {
                     aspectRatio={4 / 5}
                     maxWidth={1100}
                     sizes="(min-width: 1024px) 440px, 90vw"
-                    preload
                     fill
                     className="object-cover"
                   />
@@ -101,7 +88,7 @@ export default async function AboutPage() {
               {settings?.location && <p className="text-sm text-ink-2">{settings.location}</p>}
               <SocialLinks links={settings?.socialLinks} variant="list" />
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -253,24 +240,6 @@ export default async function AboutPage() {
           </Stagger>
         </section>
       )}
-
-      {about.tools.length > 0 && (
-        <div className="border-t border-line">
-          <ToolsSection
-            tools={about.tools}
-            copy={{eyebrow: 'Toolkit', heading: 'The tools behind the work'}}
-          />
-        </div>
-      )}
-
-      <ContactCta
-        copy={{
-          eyebrow: 'Next step',
-          heading: 'Let’s make your brand impossible to scroll past.',
-          intro: 'Tell me where you are and where you want to be.',
-        }}
-        email={settings?.contactEmail}
-      />
-    </>
+    </div>
   )
 }

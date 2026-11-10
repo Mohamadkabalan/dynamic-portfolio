@@ -101,8 +101,8 @@ export const caseStudy = defineType({
     }),
     defineField({
       name: 'featured',
-      title: 'Feature on the homepage',
-      description: 'Switch on to show this project in the "Featured work" section of the homepage.',
+      title: 'Pin to the top',
+      description: 'Switch on to show this project before the others in the Work section.',
       type: 'boolean',
       group: 'overview',
       initialValue: false,

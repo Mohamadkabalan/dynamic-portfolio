@@ -65,16 +65,23 @@ export const LANGUAGE_LEVEL_SCORES: Record<string, number> = Object.fromEntries(
   LANGUAGE_LEVELS.map((level) => [level.value, level.score]),
 )
 
-/** Homepage sections the editor can reorder and hide. The hero always comes first. */
+/**
+ * The sections of the one-page site, in their default order. The editor can
+ * reorder and hide them; the hero always comes first. Work (`featuredWork`),
+ * About and Contact (`contactCta`) are what the menu links to, so the page
+ * adds them in a default place when they have no row. The values are stored
+ * in content, which is why two of them keep their original names.
+ */
 export const HOME_SECTIONS = [
   {title: 'Client logos', value: 'logos'},
   {title: 'Stats ("by the numbers")', value: 'stats'},
-  {title: 'Featured case studies', value: 'featuredWork'},
+  {title: 'Work — all case studies', value: 'featuredWork'},
   {title: 'Content feed', value: 'feed'},
   {title: 'Services', value: 'services'},
   {title: 'Testimonials', value: 'testimonials'},
+  {title: 'About', value: 'about'},
   {title: 'Tools', value: 'tools'},
-  {title: 'Contact call-to-action', value: 'contactCta'},
+  {title: 'Contact — form & details', value: 'contactCta'},
 ] as const
 
 export type HomeSectionValue = (typeof HOME_SECTIONS)[number]['value']

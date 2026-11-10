@@ -1,16 +1,13 @@
 import {Mail, MapPin} from 'lucide-react'
-import type {Metadata} from 'next'
 
 import {ContactForm} from '@/components/forms/ContactForm'
+import {Reveal} from '@/components/motion/Reveal'
+import type {SectionCopy} from '@/components/sections/HomeSections'
 import {Availability} from '@/components/shell/Availability'
 import {SocialLinks} from '@/components/shell/SocialLinks'
 import {Eyebrow} from '@/components/ui/SectionHeading'
-import {pageMetadata} from '@/lib/metadata'
-import {getContactData, getSiteSettings} from '@/sanity/lib/data'
+import type {SiteSettings} from '@/sanity/lib/data'
 
-const DEFAULT_HEADING = 'Let’s build something people talk about.'
-const DEFAULT_INTRO =
-  'Share a few details about your brand and goals. I read every message and reply within two working days.'
 const DEFAULT_SUCCESS = 'Thank you! I will get back to you within two working days.'
 const DEFAULT_BUDGETS = [
   'Under $1,000 / month',
@@ -21,33 +18,28 @@ const DEFAULT_BUDGETS = [
   'Not sure yet',
 ]
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings()
-  return pageMetadata({
-    settings,
-    title: 'Contact',
-    description: settings?.contactPage?.intro || DEFAULT_INTRO,
-    path: '/contact',
-  })
+interface ContactSectionProps {
+  copy: SectionCopy
+  /** Service titles offered in the form's "What do you need?" field. */
+  services: string[]
+  settings: SiteSettings | null
 }
 
-export default async function ContactPage() {
-  const [contact, settings] = await Promise.all([getContactData(), getSiteSettings()])
-  const copy = settings?.contactPage
-  const budgets = copy?.budgetOptions?.filter(Boolean) ?? []
+/** The enquiry form with contact details beside it. The "Contact" link in the menu lands here. */
+export function ContactSection({copy, services, settings}: ContactSectionProps) {
+  const form = settings?.contactPage
+  const budgets = form?.budgetOptions?.filter(Boolean) ?? []
   const email = settings?.contactEmail
 
   return (
-    <section className="shell pb-(--section-y) pt-12 md:pt-20">
-      <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-        <div className="lg:col-span-5">
-          <Eyebrow className="mb-6">Contact</Eyebrow>
-          <h1 className="text-display-lg motion-safe:animate-rise">
-            {copy?.heading?.trim() || DEFAULT_HEADING}
-          </h1>
-          <p className="text-lead mt-7 max-w-md text-ink-2 motion-safe:animate-rise motion-safe:[animation-delay:80ms]">
-            {copy?.intro?.trim() || DEFAULT_INTRO}
-          </p>
+    <section id="contact" aria-labelledby="contact-heading" className="border-t border-line">
+      <div className="shell section-y grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <Reveal className="lg:col-span-5">
+          <Eyebrow className="mb-6">{copy.eyebrow || 'Contact'}</Eyebrow>
+          <h2 id="contact-heading" className="text-display-lg">
+            {copy.heading}
+          </h2>
+          {copy.intro && <p className="text-lead mt-7 max-w-md text-ink-2">{copy.intro}</p>}
 
           <div className="mt-10 space-y-6">
             <Availability
@@ -75,16 +67,16 @@ export default async function ContactPage() {
             </ul>
             <SocialLinks links={settings?.socialLinks} variant="list" className="max-w-md" />
           </div>
-        </div>
+        </Reveal>
 
-        <div className="lg:col-span-7">
+        <Reveal delay={0.1} className="lg:col-span-7">
           <ContactForm
-            services={(contact?.services ?? []).map((service) => service.title)}
+            services={services}
             budgetOptions={budgets.length > 0 ? budgets : DEFAULT_BUDGETS}
-            successMessage={copy?.successMessage?.trim() || DEFAULT_SUCCESS}
+            successMessage={form?.successMessage?.trim() || DEFAULT_SUCCESS}
             contactEmail={email}
           />
-        </div>
+        </Reveal>
       </div>
     </section>
   )
