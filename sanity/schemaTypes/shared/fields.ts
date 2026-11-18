@@ -1,4 +1,4 @@
-import {defineField, type FieldDefinition} from 'sanity'
+import {defineField, type FieldDefinition, type ImageRule} from 'sanity'
 
 import {PLATFORMS} from '../../lib/constants'
 
@@ -11,6 +11,8 @@ interface ImageFieldOptions {
   fieldset?: string
   /** Extra help for the alt text field, e.g. what a good description looks like here. */
   altHint?: string
+  /** Extra checks on the image itself, e.g. a warning about the kind of file uploaded. */
+  validation?: (rule: ImageRule) => ImageRule
 }
 
 /**
@@ -26,6 +28,7 @@ export function imageField({
   group,
   fieldset,
   altHint,
+  validation,
 }: ImageFieldOptions): FieldDefinition {
   return defineField({
     name,
@@ -35,7 +38,10 @@ export function imageField({
     group,
     fieldset,
     options: {hotspot: true},
-    validation: (rule) => (required ? rule.required().assetRequired() : rule),
+    validation: (rule) => {
+      const base = required ? rule.required().assetRequired() : rule
+      return validation ? [base, validation(rule)] : base
+    },
     fields: [
       defineField({
         name: 'alt',

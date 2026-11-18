@@ -2,6 +2,8 @@ import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list
 import {CaseIcon} from '../../lib/icons'
 import {defineField, defineType} from 'sanity'
 
+import {apiVersion} from '../../env'
+
 import {imageField} from '../shared/fields'
 
 export const client = defineType({
@@ -22,8 +24,22 @@ export const client = defineType({
       name: 'logo',
       title: 'Logo',
       description:
-        'A single-colour logo on a transparent background (SVG or PNG) looks best — it is tinted automatically to match light and dark mode. If there is no logo, the name is shown as text.',
+        'Best: the logo on a transparent background (SVG or PNG) — it is tinted automatically to match light and dark mode. A logo on a white background also works; the white is blended away. A logo on a coloured or black background is shown as a muted tile. If there is no logo, the name is shown as text.',
       altHint: 'Usually just the brand name followed by "logo". Example: "Lumen Skincare logo".',
+      // A warning only: the logo still shows, just without the tinted treatment.
+      validation: (rule) =>
+        rule
+          .custom(async (value, context) => {
+            const id = value?.asset?._ref
+            if (!id) return true
+            const opaque = await context
+              .getClient({apiVersion})
+              .fetch<boolean | null>('*[_id == $id][0].metadata.isOpaque', {id})
+            return opaque
+              ? 'This file has no transparent background, so it is shown as a muted image rather than tinted. For the cleanest look, upload a PNG or SVG with a transparent background.'
+              : true
+          })
+          .warning(),
     }),
     defineField({
       name: 'website',

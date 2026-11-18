@@ -108,7 +108,7 @@ export const HOME_QUERY = defineQuery(`
       _id,
       name,
       website,
-      logo{${imageFields}}
+      logo{${imageFields}, "isOpaque": asset->metadata.isOpaque}
     },
     "stats": *[_type == "stat"] | order(orderRank asc){_id, label, value, suffix, description},
     "feed": *[_type == "contentPiece" && featured != false]

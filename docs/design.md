@@ -145,7 +145,10 @@ carousel indicator, hover-to-play), `CarouselViewer` (swipe/scroll-snap),
 `FeedLightbox` (media + caption + metrics), `StoryAvatar` (gradient story ring),
 `StatChip` (floating hero badges).
 
-**Sections** — `Hero`, `LogoMarquee`, `StatsBand`, `FeaturedWork`,
+**Sections** — `Hero`, `LogoMarquee` (transparent logos are tinted to ink;
+logos saved with a solid background are desaturated and blended with the
+page instead, so white or black backgrounds vanish and other colours become
+muted tiles), `StatsBand`, `FeaturedWork`,
 `FeedSection`, `ServicesSection`, `TestimonialStories`, `ToolsSection`,
 `LanguagesSection` (About page: language, proficiency label and a decorative
 five-segment meter in the accent colour; the label carries the meaning),

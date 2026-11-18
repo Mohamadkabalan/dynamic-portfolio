@@ -8,15 +8,28 @@ interface LogoMarqueeProps {
   heading?: string | null
 }
 
+/**
+ * A logo on a transparent background is tinted to a single ink colour. A logo
+ * saved with a solid background cannot be tinted (the whole file would become
+ * a dark block), so it is shown desaturated and blended with the page instead:
+ * a white background disappears in light mode, a black one in dark mode, and
+ * any other colour becomes a muted tile.
+ */
 function Logo({client}: {client: LogoClient}) {
   if (hasAsset(client.logo)) {
+    const opaque = client.logo.isOpaque === true
     return (
       <SanityImage
         image={client.logo}
         alt={client.logo.alt || client.name}
-        maxWidth={Math.round(72 * Math.min(croppedAspectRatio(client.logo), 5))}
+        maxWidth={Math.round(80 * Math.min(croppedAspectRatio(client.logo), 5))}
         sizes="160px"
-        className="h-8 w-auto max-w-40 object-contain opacity-65 brightness-0 dark:invert"
+        className={cn(
+          'w-auto max-w-40 object-contain',
+          opaque
+            ? 'h-10 rounded-md opacity-80 grayscale mix-blend-multiply dark:invert dark:mix-blend-screen'
+            : 'h-8 opacity-65 brightness-0 dark:invert',
+        )}
       />
     )
   }
@@ -45,7 +58,9 @@ export function LogoMarquee({clients, heading}: LogoMarqueeProps) {
         className="group relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
         style={{'--marquee-duration': duration} as React.CSSProperties}
       >
-        <ul className="marquee-track flex w-max animate-marquee items-center group-focus-within:[animation-play-state:paused] group-hover:[animation-play-state:paused]">
+        {/* The animated track paints the page colour itself: blended logos can
+            only blend with what is drawn inside the same animated layer. */}
+        <ul className="marquee-track flex w-max animate-marquee items-center bg-paper group-focus-within:[animation-play-state:paused] group-hover:[animation-play-state:paused]">
           {[0, 1].map((copy) =>
             half.map((client, index) => {
               // Only the first run of logos is announced; the rest is visual repetition.
