@@ -2,7 +2,20 @@
 
 /* Design tokens — see docs/design.md. */
 
-@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+/*
+ * dark: utilities follow the theme the visitor chose; with no choice made
+ * (or no JavaScript) they follow the system setting, like the tokens below.
+ */
+@custom-variant dark {
+  &:where([data-theme='dark'], [data-theme='dark'] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme='light']), :root:not([data-theme='light']) *) {
+      @slot;
+    }
+  }
+}
 
 :root {
   color-scheme: light;

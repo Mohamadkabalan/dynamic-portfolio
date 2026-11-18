@@ -11,6 +11,16 @@ function currentTheme(): Theme {
   return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
 }
 
+/** The saved choice, or the system setting when nothing has been saved. */
+function preferredTheme(media: MediaQueryList): Theme {
+  let stored: string | null = null
+  try {
+    stored = localStorage.getItem('theme')
+  } catch {}
+  if (stored === 'light' || stored === 'dark') return stored
+  return media.matches ? 'dark' : 'light'
+}
+
 /**
  * Switches between light and dark. The choice is remembered on this device;
  * until a choice is made the site follows the system setting.
@@ -18,16 +28,20 @@ function currentTheme(): Theme {
  */
 export function ThemeToggle({className}: {className?: string}) {
   useEffect(() => {
-    // Follow live system changes for visitors who have not chosen a theme.
     const media = window.matchMedia('(prefers-color-scheme: dark)')
-    const onChange = (event: MediaQueryListEvent) => {
-      let stored: string | null = null
-      try {
-        stored = localStorage.getItem('theme')
-      } catch {}
-      if (stored !== 'light' && stored !== 'dark') {
-        document.documentElement.dataset.theme = event.matches ? 'dark' : 'light'
-      }
+
+    // The inline script in the layout sets the theme before the first paint.
+    // Set it again here: when React has to re-render the page from scratch
+    // (a script injected into the HTML by the host breaks hydration), the
+    // attribute it set is lost.
+    const theme = preferredTheme(media)
+    if (document.documentElement.dataset.theme !== theme) {
+      document.documentElement.dataset.theme = theme
+    }
+
+    // Follow live system changes for visitors who have not chosen a theme.
+    const onChange = () => {
+      document.documentElement.dataset.theme = preferredTheme(media)
     }
     media.addEventListener('change', onChange)
     return () => media.removeEventListener('change', onChange)
